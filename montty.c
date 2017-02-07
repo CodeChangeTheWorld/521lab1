@@ -14,31 +14,31 @@
  * 
  * This is declared 'static' so it can't be seen outside this .c file.
  */
-static int state[MAX_NUM_TERMINALS];
+static int state[NUM_TERMINALS];
 #define	SITTING		0
 #define	READING		1
 #define	WRITING		2
 #define ECHOING     3
-static int readingState[MAX_NUM_TERMINALS];
+static int readingState[NUM_TERMINALS];
 #define NOT_READING 0
 
-static cond_id_t cond_var[MAX_NUM_TERMINALS];
+static cond_id_t cond_var[NUM_TERMINALS];
 
-static int echoBufferLength[MAX_NUM_TERMINALS];
-static int echoItemsLeft[MAX_NUM_TERMINALS];
-static char echoBuffer[MAX_NUM_TERMINALS][MAX_ECHO_BUFFER_LENGTH];
-static int echoBufferSpot[MAX_NUM_TERMINALS];
+static int echoBufferLength[NUM_TERMINALS];
+static int echoItemsLeft[NUM_TERMINALS];
+static char echoBuffer[NUM_TERMINALS][MAX_ECHO_BUFFER_LENGTH];
+static int echoBufferSpot[NUM_TERMINALS];
 
-static int writeItemsLeft[MAX_NUM_TERMINALS];
-static char writeBuffer[MAX_NUM_TERMINALS][MAX_WRITE_BUFFER_LENGTH];
-static int writeBufferLength[MAX_NUM_TERMINALS];
-static int writeBufferSpot[MAX_NUM_TERMINALS];
+static int writeItemsLeft[NUM_TERMINALS];
+static char writeBuffer[NUM_TERMINALS][MAX_WRITE_BUFFER_LENGTH];
+static int writeBufferLength[NUM_TERMINALS];
+static int writeBufferSpot[NUM_TERMINALS];
 
-static int terminalItemsLeft[MAX_NUM_TERMINALS];
-static int terminalItemsWrittenSoFar[MAX_NUM_TERMINALS];
-static char terminalBuffer[MAX_NUM_TERMINALS][MAX_ECHO_BUFFER_LENGTH];
-static int terminalBufferLength[MAX_NUM_TERMINALS];
-static int terminalBufferSpot[MAX_NUM_TERMINALS];
+static int terminalItemsLeft[NUM_TERMINALS];
+static int terminalItemsWrittenSoFar[NUM_TERMINALS];
+static char terminalBuffer[NUM_TERMINALS][MAX_ECHO_BUFFER_LENGTH];
+static int terminalBufferLength[NUM_TERMINALS];
+static int terminalBufferSpot[NUM_TERMINALS];
 
 /*
  * Output buflen chars from buf to screen, blocking until all characters
