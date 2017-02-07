@@ -9,7 +9,6 @@ main(int argc, char **argv)
     InitTerminalDriver();
     InitTerminal(1);
 
-    sleep(3);
-
+    sleep(30);
     exit(0);
 }
