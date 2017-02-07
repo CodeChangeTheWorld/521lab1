@@ -10,70 +10,70 @@
 #define INPUT_BUF_SIZE 4096
 
 /* Condition variables to lock */
-static cond_id_t writer[MAX_NUM_TERMINALS];
-static cond_id_t writing[MAX_NUM_TERMINALS];
-static cond_id_t busy_echo[MAX_NUM_TERMINALS];
-static cond_id_t reader[MAX_NUM_TERMINALS];
-static cond_id_t toRead[MAX_NUM_TERMINALS];
+static cond_id_t writer[NUM_TERMINALS];
+static cond_id_t writing[NUM_TERMINALS];
+static cond_id_t busy_echo[NUM_TERMINALS];
+static cond_id_t reader[NUM_TERMINALS];
+static cond_id_t toRead[NUM_TERMINALS];
 
 /* Buffer for the echo characters */
-char echo_buf[MAX_NUM_TERMINALS][ECHO_BUF_SIZE]; // Must be at least 3
+char echo_buf[NUM_TERMINALS][ECHO_BUF_SIZE]; // Must be at least 3
 
 /* Buffer for the input characters */
-char input_buf[MAX_NUM_TERMINALS][INPUT_BUF_SIZE];
+char input_buf[NUM_TERMINALS][INPUT_BUF_SIZE];
 
 /* To keep track of open terminals */
-int open_terminal[MAX_NUM_TERMINALS];
+int open_terminal[NUM_TERMINALS];
 
 /* Counter for the number of characters in echo_buf that needs to be echoed */
-int echo_count[MAX_NUM_TERMINALS];
+int echo_count[NUM_TERMINALS];
 
 /* Counter for actual number of character on screen */
-int screen_len[MAX_NUM_TERMINALS];
+int screen_len[NUM_TERMINALS];
 
 /* Counter for echo buffer writing and reading index */
-int echo_buf_write_index[MAX_NUM_TERMINALS];
-int echo_buf_read_index[MAX_NUM_TERMINALS];
+int echo_buf_write_index[NUM_TERMINALS];
+int echo_buf_read_index[NUM_TERMINALS];
 
 /* Boolean to check echo should initiate or not */
-bool initiate_echo[MAX_NUM_TERMINALS];
+bool initiate_echo[NUM_TERMINALS];
 
 /* Boolean to check for back spacing */
-bool first_backspace[MAX_NUM_TERMINALS];
+bool first_backspace[NUM_TERMINALS];
 
 /* Keep track of the number of writers */
-int num_writers[MAX_NUM_TERMINALS];
+int num_writers[NUM_TERMINALS];
 
 /* Keep track of the number of waiting writers */
-int num_waiting[MAX_NUM_TERMINALS];
+int num_waiting[NUM_TERMINALS];
 
 /* Counter for the number of characters in WriteTerminal buf */
-int writeT_buf_count[MAX_NUM_TERMINALS];
+int writeT_buf_count[NUM_TERMINALS];
 
 /* The length of the WriteTerminal buffer */
-int writeT_buf_length[MAX_NUM_TERMINALS];
+int writeT_buf_length[NUM_TERMINALS];
 
 /* Keep track of whether a newline was written or not */
-bool writeT_first_newline[MAX_NUM_TERMINALS];
+bool writeT_first_newline[NUM_TERMINALS];
 
 /* Pointer for the buffer in WriteTerminal */
-char *writeT_buf[MAX_NUM_TERMINALS];
+char *writeT_buf[NUM_TERMINALS];
 
 /* Keep track of the number of readers */
-int num_readers[MAX_NUM_TERMINALS];
+int num_readers[NUM_TERMINALS];
 
 /* Counter for the number of input that are readable */
-int num_readable_input[MAX_NUM_TERMINALS];
+int num_readable_input[NUM_TERMINALS];
 
 /* Counter for input buffer writing and reading index */
-int input_buf_write_index[MAX_NUM_TERMINALS];
-int input_buf_read_index[MAX_NUM_TERMINALS];
+int input_buf_write_index[NUM_TERMINALS];
+int input_buf_read_index[NUM_TERMINALS];
 
 /* Counter for the number of characters in input_buf */
-int input_buf_count[MAX_NUM_TERMINALS];
+int input_buf_count[NUM_TERMINALS];
 
 /* Array for TerminalDriverStatistics */
-struct termstat statistics[MAX_NUM_TERMINALS];
+struct termstat statistics[NUM_TERMINALS];
 
 /*
  * Writes given buffer to the Terminal
@@ -85,7 +85,7 @@ int WriteTerminal(int term, char *buf, int buflen)
 
 	/* Error Handling */
 	if ((buflen < 1) || (open_terminal[term] < 0) ||
-		(term < 0) || (term > MAX_NUM_TERMINALS - 1))
+		(term < 0) || (term > NUM_TERMINALS - 1))
 		return -1;
 
 	/* 
@@ -139,7 +139,7 @@ int ReadTerminal(int term, char *buf, int buflen)
 
 	/* Error Handling */
 	if ((buflen < 1) || (buflen > INPUT_BUF_SIZE) || (open_terminal[term] < 0) || 
-		(term < 0) || (term > MAX_NUM_TERMINALS - 1))
+		(term < 0) || (term > NUM_TERMINALS - 1))
 		return -1;
 
 	/* 
@@ -187,7 +187,7 @@ int InitTerminal(int term)
 	Declare_Monitor_Entry_Procedure();
 
 	/* Error Handling */
-	if ((term < 0) || (term > MAX_NUM_TERMINALS - 1) || (open_terminal[term] == 0))
+	if ((term < 0) || (term > NUM_TERMINALS - 1) || (open_terminal[term] == 0))
 		return -1;
 
 	/* Try initializing hardware */
@@ -241,7 +241,7 @@ int InitTerminalDriver()
 {
 	Declare_Monitor_Entry_Procedure();
 	int i;
-	for (i = 0; i < MAX_NUM_TERMINALS; i++) {
+	for (i = 0; i < NUM_TERMINALS; i++) {
 		open_terminal[i] = -1;
 		statistics[i].tty_in = -1;
 		statistics[i].tty_out = -1;
@@ -261,7 +261,7 @@ int TerminalDriverStatistics(struct termstat *stats)
 	Declare_Monitor_Entry_Procedure();
 	int i;
 
-	for (i = 0; i < MAX_NUM_TERMINALS; i++) {
+	for (i = 0; i < NUM_TERMINALS; i++) {
 		stats[i].tty_in = statistics[i].tty_in;
 		stats[i].tty_out = statistics[i].tty_out;
 		stats[i].user_in = statistics[i].user_in;
