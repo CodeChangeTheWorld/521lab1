@@ -306,7 +306,7 @@ void ReceiveInterrupt(int term){
 }
 
 extern
-void TransmitInterupt(int term) {
+void TransmitInterrupt(int term) {
     Declare_Monitor_Entry_Procedure();
     int i;
     int prev;
