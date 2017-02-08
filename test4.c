@@ -6,7 +6,7 @@
 void writer1(void *);
 void writer2(void *);
 
-char string1[] = "abcdefghijklmnopqrstuvwxyz\n";
+char string1[] = "abcdefghijklmnopqrstuvfadslfjadslfjdsflajsdfadlsjfdsaljfwxyz\n";
 int length1 = sizeof(string1) - 1;
 
 char string2[] = "0123456789\n";

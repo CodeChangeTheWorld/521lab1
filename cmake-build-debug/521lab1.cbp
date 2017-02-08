@@ -82,7 +82,10 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/liufang/Documents/Courses/comp521/521lab1/montty.c">
+		<Unit filename="/Users/liufang/Documents/Courses/comp521/521lab1/montty.c.c">
+			<Option target="521lab1"/>
+		</Unit>
+		<Unit filename="/Users/liufang/Documents/Courses/comp521/521lab1/montty1.c">
 			<Option target="521lab1"/>
 		</Unit>
 		<Unit filename="/Users/liufang/Documents/Courses/comp521/521lab1/test1.c">

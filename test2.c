@@ -17,7 +17,6 @@ int main(int argc, char **argv)
     if (argc > 2) HardwareInputSpeed(1, atoi(argv[2]));
 
     ThreadCreate(writer, NULL);
-
     ThreadWaitAll();
 
     exit(0);

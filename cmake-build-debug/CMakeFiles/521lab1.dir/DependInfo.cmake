@@ -4,7 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/Users/liufang/Documents/Courses/comp521/521lab1/montty.c" "/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles/521lab1.dir/montty.c.o"
+  "/Users/liufang/Documents/Courses/comp521/521lab1/montty.c.c" "/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles/521lab1.dir/montty.c.c.o"
+  "/Users/liufang/Documents/Courses/comp521/521lab1/montty1.c" "/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles/521lab1.dir/montty1.c.o"
   "/Users/liufang/Documents/Courses/comp521/521lab1/test1.c" "/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles/521lab1.dir/test1.c.o"
   "/Users/liufang/Documents/Courses/comp521/521lab1/test2.c" "/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles/521lab1.dir/test2.c.o"
   "/Users/liufang/Documents/Courses/comp521/521lab1/test3.c" "/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles/521lab1.dir/test3.c.o"

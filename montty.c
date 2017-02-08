@@ -1,461 +1,233 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
-#include <string.h>
+#include <terminals.h>
 #include <threads.h>
 #include <hardware.h>
-#include <terminals.h>
 
-/* Constants */
-#define ECHO_BUF_SIZE 1024 // Must be at least 2 since one is reserved for \7
-#define INPUT_BUF_SIZE 4096
+#define MAX_BUFF_LEN 1024
+
+/* Echo buffer */
+char echo_buff[NUM_TERMINALS][MAX_BUFF_LEN];
+/* Echo Buffer address */
+int echo_buff_addr[NUM_TERMINALS];
+/* Record first WriteDataRegister char */
+int echo_first_addr[NUM_TERMINALS];
+/* Record last WriteDataRegister char */
+int echo_last_addr[NUM_TERMINALS];
+
+/* Input buffer */
+char input_buff[NUM_TERMINALS][MAX_BUFF_LEN];
+/* Input buffer address */
+int input_buff_addr[NUM_TERMINALS];
+/* Read from input buffer start point */
+int input_read_start[NUM_TERMINALS];
+
+/* Output buffer, pointer to the next character address */
+char *output_buff_addr[NUM_TERMINALS];
+/* Output first char addr buffer */
+int output_first_addr[NUM_TERMINALS];
+/* Output string length */
+int output_len[NUM_TERMINALS];
+/* Justify if '\r' have been translated in writeterminal*/
+bool output_r_trans[NUM_TERMINALS];
+
+/* How many attempts to write on the same terminal */
+int writing_num[NUM_TERMINALS];
 
 /* Condition variables to lock */
-static cond_id_t writer[NUM_TERMINALS];
-static cond_id_t writing[NUM_TERMINALS];
-static cond_id_t busy_echo[NUM_TERMINALS];
-static cond_id_t reader[NUM_TERMINALS];
-static cond_id_t toRead[NUM_TERMINALS];
-
-/* Buffer for the echo characters */
-char echo_buf[NUM_TERMINALS][ECHO_BUF_SIZE]; // Must be at least 3
-
-/* Buffer for the input characters */
-char input_buf[NUM_TERMINALS][INPUT_BUF_SIZE];
-
-/* To keep track of open terminals */
-int open_terminal[NUM_TERMINALS];
-
-/* Counter for the number of characters in echo_buf that needs to be echoed */
-int echo_count[NUM_TERMINALS];
-
-/* Counter for actual number of character on screen */
-int screen_len[NUM_TERMINALS];
-
-/* Counter for echo buffer writing and reading index */
-int echo_buf_write_index[NUM_TERMINALS];
-int echo_buf_read_index[NUM_TERMINALS];
-
-/* Boolean to check echo should initiate or not */
-bool initiate_echo[NUM_TERMINALS];
-
-/* Boolean to check for back spacing */
-bool first_backspace[NUM_TERMINALS];
-
-/* Keep track of the number of writers */
-int num_writers[NUM_TERMINALS];
-
-/* Keep track of the number of waiting writers */
-int num_waiting[NUM_TERMINALS];
-
-/* Counter for the number of characters in WriteTerminal buf */
-int writeT_buf_count[NUM_TERMINALS];
-
-/* The length of the WriteTerminal buffer */
-int writeT_buf_length[NUM_TERMINALS];
-
-/* Keep track of whether a newline was written or not */
-bool writeT_first_newline[NUM_TERMINALS];
-
-/* Pointer for the buffer in WriteTerminal */
-char *writeT_buf[NUM_TERMINALS];
-
-/* Keep track of the number of readers */
-int num_readers[NUM_TERMINALS];
-
-/* Counter for the number of input that are readable */
-int num_readable_input[NUM_TERMINALS];
-
-/* Counter for input buffer writing and reading index */
-int input_buf_write_index[NUM_TERMINALS];
-int input_buf_read_index[NUM_TERMINALS];
-
-/* Counter for the number of characters in input_buf */
-int input_buf_count[NUM_TERMINALS];
+static cond_id_t write[NUM_TERMINALS];
 
 /* Array for TerminalDriverStatistics */
-struct termstat statistics[NUM_TERMINALS];
+struct termstat stat[NUM_TERMINALS];
 
-/*
- * Writes given buffer to the Terminal
+/* State array*/
+int state[NUM_TERMINALS];
+#define WAITING 0
+#define READING 1
+#define WRITING 2
+#define ECHOING 3
+
+/* Interrupt handler1
+ * When the receipt of a new character from a keyboard completes,
+ * the terminal hardware signals a receive interrupt.
  */
-extern
-int WriteTerminal(int term, char *buf, int buflen)
-{
+void ReceiveInterrupt(int term) {
 	Declare_Monitor_Entry_Procedure();
 
-	/* Error Handling */
-	if ((buflen < 1) || (open_terminal[term] < 0) ||
-		(term < 0) || (term > NUM_TERMINALS - 1))
-		return -1;
+	char character = ReadDataRegister(term);
+	int input_addr = input_buff_addr[term];
+	int echo_addr = echo_buff_addr[term];
+	echo_first_addr[term] = echo_addr;
 
-	/* 
-	 * Check if you can enter. That is, if there isn't anyone 
-	 * else writing on the same terminal.
-	 */
-	if ((num_writers[term] > 0) || num_waiting[term] > 0) {
-		num_waiting[term]++;
-		CondWait(writer[term]);
+	/* put this character into the input buffer */
+	if (character == '\b') {
+		if (input_buff_addr[term] != 0) { 
+			input_buff_addr[term] --;
+		}
+		echo_buff[term][echo_addr] = '\b';
+		echo_buff[term][echo_addr+1] = ' ';
+		echo_buff[term][echo_addr+2] = '\b';
+		echo_buff_addr[term] +=3;
+		echo_last_addr[term] = echo_buff_addr[term] - 1;
 	} else {
-		num_waiting[term]++;
-	}
-	num_writers[term]++;
-	num_waiting[term]--;
+		if (character == '\r') {
+			input_buff[term][input_addr] = '\n';
+			input_buff_addr[term] ++;
+			echo_buff[term][echo_addr] = '\r';
+			echo_buff[term][echo_addr+1] = '\n';
+			echo_buff_addr[term] += 2;	
+			echo_last_addr[term] = echo_buff_addr[term] - 1;	
+		} else {
+			input_buff[term][input_addr] = character;
+			input_buff_addr[term] ++;
+			echo_buff[term][echo_addr] = character;
+			echo_buff_addr[term] ++;
+			echo_last_addr[term] = echo_buff_addr[term]  ;		
+		}
+	}	
+	if (state[term] != WRITING) {
+		stat[term].tty_out ++;
+		WriteDataRegister(term, character);
+	}	
+}
+/* Interrupt handler2
+ * when the transmission of a character to a terminal completes, 
+ * the terminal hardware signals a transmit interrupt.
+ */
+void TransmitInterrupt(int term) {
+	Declare_Monitor_Entry_Procedure();
+	if( echo_last_addr[term] != echo_first_addr[term]) {
+		stat[term].tty_out ++;
+		WriteDataRegister(term, echo_buff[term][echo_first_addr[term]]);
+		echo_first_addr[term] ++;
+	}  else {
+		if (output_buff_addr[term][output_first_addr[term]] == '\n' && output_r_trans[term]) {
+			output_r_trans[term] = false;
+			state[term] = WRITING;
+			stat[term].tty_out ++;
+			WriteDataRegister(term, '\n');
+			output_first_addr[term] ++;
+		} else if (output_buff_addr[term][output_first_addr[term]] == '\n' && !output_r_trans[term]){
+			output_r_trans[term] = true;
+			WriteDataRegister(term, '\r');
+		} else if ( output_first_addr[term] != output_len[term]) {
+			state[term] = WRITING;
+			stat[term].tty_out ++;
+			output_first_addr[term] ++;
+			WriteDataRegister(term, output_buff_addr[term][output_first_addr[term]]);
+			
+		} else {
+			printf("%c\n", 'c');
+			writing_num[term] --;
+			output_first_addr[term] = 0;
+			CondSignal(write[term]);
+		}
+	} 
+}
+/* 
+ * Read characters from terminal and place into buf until buflen chars
+ * have been read or a '\n' is read. 
+ */
+int ReadTerminal(int term, char *buf, int buflen){
+	// Declare_Monitor_Entry_Procedure();
+	// stat[term].user_out += buflen;
+	// if (buflen < 0) return -1;
+	// if (buflen == 0) return 0;
+	// int i;
+	// char *current_buf=buf;
+	// for (i = input_read_start[term]; i < buflen; i ++) {
+	// 	char c = input_buff[term][i];
+	// 	if (c == '\n') {
+	// 		input_read_start[term] = i + 1;
+	// 		break;
+	// 	} else {
+	// 		*current_buf = c;
+	// 		current_buf ++;
+	// 	}
+	// }
 
-	/* Wait until echo is done */
-	if (!initiate_echo[term])
-		CondWait(busy_echo[term]);
 
-	/* Output to the screen */
-	writeT_buf[term] = buf;
-	writeT_buf_count[term] = buflen;
-	writeT_buf_length[term] = buflen;
 
-	if (writeT_buf[term][0] == '\n') {
-		WriteDataRegister(term, '\r');
-		writeT_buf_count[term]++;
-		statistics[term].user_in--;
-		writeT_first_newline[term] = false;
-	} else {
-		WriteDataRegister(term, writeT_buf[term][0]);
-		writeT_first_newline[term] = true;
-	}
-
-	/* Wait until writing is done */
-	CondWait(writing[term]);
-	num_writers[term]--;
-	CondSignal(writer[term]);
 	return buflen;
 }
 
-/*
- * Stores the input buffer of given length or upto \n, which every is shorter, to the pointer passed in
+/* 
+ * Copy the character from term into buf
+ * Called by some user process (thread) whenever it wants to output something. Roughly equivalent to printf.
+ * term: terminal number
  */
-extern
-int ReadTerminal(int term, char *buf, int buflen)
-{
+int WriteTerminal(int term, char *buf, int buflen) {
 	Declare_Monitor_Entry_Procedure();
-	char c;
-	int i;
-
-	/* Error Handling */
-	if ((buflen < 1) || (buflen > INPUT_BUF_SIZE) || (open_terminal[term] < 0) || 
-		(term < 0) || (term > NUM_TERMINALS - 1))
-		return -1;
-
-	/* 
-	 * Check if you can enter. That is, if there isn't anyone 
-	 * else reading on the same terminal.
-	 */
-	if (num_readers[term] > 0) {
-		CondWait(reader[term]);
-	}
-	num_readers[term]++;
-
-	/* Wait until we can read */
-	if (num_readable_input[term] == 0)
-		CondWait(toRead[term]);
-	num_readable_input[term]--;
-
-	/* Read from input */
-	for (i = 0; i < buflen;) {
-		c = input_buf[term][input_buf_read_index[term]];
-		input_buf_read_index[term] = (input_buf_read_index[term] + 1) % INPUT_BUF_SIZE;
-		strncat(buf, &c, 1);
-		/* Statistics since the boundary has been crossed */
-		statistics[term].user_out++;
-		i++;
-		input_buf_count[term]--;
-		if ('\n' == c)
-			break;
-	}
-
-	if ('\n' != c)
-		num_readable_input[term]++;
-	
-	num_readers[term]--;
-	CondSignal(reader[term]);
-
-	return i;
-}
-
-/*
- * Initialize all the variables for the terminal
- */
-extern
-int InitTerminal(int term)
-{
-	Declare_Monitor_Entry_Procedure();
-
-	/* Error Handling */
-	if ((term < 0) || (term > NUM_TERMINALS - 1) || (open_terminal[term] == 0))
-		return -1;
-
-	/* Try initializing hardware */
-	open_terminal[term] = InitHardware(term);
-
-	if (open_terminal[term] == 0) {
-		// Condition variables
-		writer[term] = CondCreate();
-		writing[term] = CondCreate();
-		busy_echo[term] = CondCreate();
-		reader[term] = CondCreate();
-		toRead[term] = CondCreate();
-
-		// WriteTerminal
-		num_writers[term] = 0;
-		num_waiting[term] = 0;
-		writeT_buf_count[term] = 0;
-		writeT_buf_length[term] = 0;
-		writeT_first_newline[term] = true;
-
-		// Echo
-		echo_count[term] = 0;
-		input_buf_count[term] = 0;
-		screen_len[term] = 0;
-		echo_buf_write_index[term] = 0;
-		echo_buf_read_index[term] = 0;
-		initiate_echo[term] = true;
-		first_backspace[term] = true;
-		
-		// ReadTerminal
-		num_readers[term] = 0;
-		num_readable_input[term] = 0;
-		input_buf_write_index[term] = 0;
-		input_buf_read_index[term] = 0;
-
-		// Statistics
-		statistics[term].tty_in = 0;
-		statistics[term].tty_out = 0;
-		statistics[term].user_in = 0;
-		statistics[term].user_out = 0;
-	}
-
-	return open_terminal[term];
-}
-
-/*
- * Initialization needed for the whole terminalsleep(1);
- */
-extern
-int InitTerminalDriver()
-{
-	Declare_Monitor_Entry_Procedure();
-	int i;
-	for (i = 0; i < NUM_TERMINALS; i++) {
-		open_terminal[i] = -1;
-		statistics[i].tty_in = -1;
-		statistics[i].tty_out = -1;
-		statistics[i].user_in = -1;
-		statistics[i].user_out = -1;
-	}
-
-	return 0;
-}
-
-/*
- * Copies internal statistics to the passed statistics pointer
- */
-extern
-int TerminalDriverStatistics(struct termstat *stats)
-{
-	Declare_Monitor_Entry_Procedure();
-	int i;
-
-	for (i = 0; i < NUM_TERMINALS; i++) {
-		stats[i].tty_in = statistics[i].tty_in;
-		stats[i].tty_out = statistics[i].tty_out;
-		stats[i].user_in = statistics[i].user_in;
-		stats[i].user_out = statistics[i].user_out;
-	}
-
-	return 0;
-}
-
-/*
- * Called by the hardware once each character typed on the keyboard is ready.
- * It will concatnate the character into the buffer, increment the count
- * and start writing to the terminal.
- */
-extern
-void ReceiveInterrupt(int term)
-{
-	Declare_Monitor_Entry_Procedure();
-
-	/* Read from register */
-	char c = ReadDataRegister(term);
-	statistics[term].tty_in++;
-
-	/* Echo buf update */
-	if ((('\b' == c) || ('\177' == c)) && (0 != screen_len[term])) {
-
-		/* Back space if there's room */
-		if ((ECHO_BUF_SIZE - echo_count[term]) > 0) {
-			echo_buf[term][echo_buf_write_index[term]] = '\b';
-			echo_buf_write_index[term] = (echo_buf_write_index[term] + 1) % ECHO_BUF_SIZE;
-			echo_count[term]++;
-			screen_len[term]--;
-		}
-
-	} else if (('\b' != c) && ('\177' != c)) {
-
-		/* Echo only if there's room, else drop the character. */
-		if ((ECHO_BUF_SIZE - echo_count[term]) > 1) { // Leave room for beeping
-			echo_buf[term][echo_buf_write_index[term]] = c;
-			echo_buf_write_index[term] = (echo_buf_write_index[term] + 1) % ECHO_BUF_SIZE;
-			echo_count[term]++;
-			screen_len[term]++;
-		} else if ((ECHO_BUF_SIZE - echo_count[term]) == 1) { // Beep
-			echo_buf[term][echo_buf_write_index[term]] = '\7';
-			echo_buf_write_index[term] = (echo_buf_write_index[term] + 1) % ECHO_BUF_SIZE;
-			echo_count[term]++;
-		}
-	}
-
-	/* Character processing */
-	if ('\r' == c) {
-		c = '\n';
-	}
-
-	/* Input buf update */
-	if (('\b' == c) || ('\177' == c)) {
-		if ((input_buf_count[term] > 0) && ('\n' != input_buf[term][(input_buf_write_index[term] + INPUT_BUF_SIZE - 1) % INPUT_BUF_SIZE])) {
-			input_buf_write_index[term] = (input_buf_write_index[term] + INPUT_BUF_SIZE - 1) % INPUT_BUF_SIZE;
-			input_buf_count[term]--;
-		}
+	stat[term].user_in += buflen;
+	if (buflen < 0) return 0;
+	/* If there are some other threads writing */
+	while (writing_num[term] >0  ) {
+		CondWait(write[term]);
+	} 
+	/* start a new writing process */
+	writing_num[term] ++;
+	printf("%s\n", buf);
+	output_buff_addr[term] = buf;
+	//output_first_addr[term] ++;
+	output_len[term] = buflen;
+	state[term] = WRITING;
+	stat[term].tty_out ++;
+	if (*buf == '\n') {
+		output_r_trans[term] = true;
+		WriteDataRegister(term, '\r');
 	} else {
-		if ((INPUT_BUF_SIZE - input_buf_count[term]) > 0) {
-			input_buf[term][input_buf_write_index[term]] = c;
-			input_buf_write_index[term] = (input_buf_write_index[term] + 1) % INPUT_BUF_SIZE;
-			input_buf_count[term]++;
-			if ('\n' == c) {
-				num_readable_input[term]++;
-				CondSignal(toRead[term]);
-			}
-		} else if ((ECHO_BUF_SIZE - echo_count[term]) > 0) { // Beep
-			echo_buf[term][echo_buf_write_index[term]] = '\7';
-			echo_buf_write_index[term] = (echo_buf_write_index[term] + 1) % ECHO_BUF_SIZE;
-			echo_count[term]++;
-		}
+		WriteDataRegister(term, output_buff_addr[term][0]);
 	}
-
-	/* If this is the first character, then start the echo */
-	if (initiate_echo[term] && (echo_count[term] > 0)) {
-		if (num_writers[term] == 0) {
-			WriteDataRegister(term, echo_buf[term][echo_buf_read_index[term]]);
-			echo_buf_read_index[term] = (echo_buf_read_index[term] + 1) % ECHO_BUF_SIZE;
-			echo_count[term]--;
-			initiate_echo[term] = false;
-		}
-	}
-
+	
+	
+	return buflen;
 }
 
+int InitTerminal(int term) {
+	if (InitHardware(term) == 0) {
+		echo_buff_addr[term] = 0;
+		input_buff_addr[term] = 0;
+		output_buff_addr[term] = 0;
+		input_read_start[term] = 0;
+		state[term] = WAITING;
+		write[term] = CondCreate();
+		stat[term].tty_in = 0;
+		stat[term].tty_out = 0;
+		stat[term].user_in = 0;
+		stat[term].user_out = 0;
 
-/*
- * Called by the hardware once each character is written to the 
- * display.
- */
-extern
-void TransmitInterrupt(int term)
-{
+		writing_num[term] = 0;
+		output_r_trans[term] = false;
+		return 0;
+	} else {
+		return -1;
+	}
+	
+}
+
+int InitTerminalDriver() {
 	Declare_Monitor_Entry_Procedure();
 	int i;
-	int prev;
-
-	/* Statistics */
-	statistics[term].tty_out++;
-
-	/* Debug */
-	//printf("terminal %d: echo_count = %d, screen_len = %d, echo_write = %d, echo_read = %d, [%d, %d, %d]\n", term, echo_count[term], screen_len[term], echo_buf_write_index[term], echo_buf_read_index[term], echo_buf[term][0], echo_buf[term][1], echo_buf[term][2]);
-	//fflush(stdout);
-
-	/* Something to write from echo */
-	prev = (echo_buf_read_index[term] + ECHO_BUF_SIZE - 1) % ECHO_BUF_SIZE;
-
-	/* Character Processing */
-	if ('\r' == echo_buf[term][prev]) {
-		WriteDataRegister(term, '\n');
-		echo_buf[term][prev] = '\n';
-		initiate_echo[term] = false;
-		screen_len[term] = 0;
+	for (i = 0; i < NUM_TERMINALS; i++) {
+		stat[i].tty_in = -1;
+		stat[i].tty_out = -1;
+		stat[i].user_in = -1;
+		stat[i].user_out = -1;
 	}
-
-	else if ('\b' == echo_buf[term][prev]) {
-		if (first_backspace[term]) {
-			WriteDataRegister(term, ' ');
-			first_backspace[term] = false;
-			initiate_echo[term] = false;
-		} else {
-			WriteDataRegister(term, '\b');
-			echo_buf[term][prev] = '\n';
-			first_backspace[term] = true;
-			initiate_echo[term] = false;
-		}
-	}
-
-	/* Keep echoing as long as there is something to echo */
-	else if (echo_count[term] > 0) {
-		WriteDataRegister(term, echo_buf[term][echo_buf_read_index[term]]);
-		echo_buf_read_index[term] = (echo_buf_read_index[term] + 1) % ECHO_BUF_SIZE;
-		echo_count[term]--;
-		initiate_echo[term] = false;
-	}
-	
-	/* WriteTerminal stuff */
-	else if (writeT_buf_count[term] > 0) {
-		/* Echo job is done */
-		initiate_echo[term] = true;
-
-		writeT_buf_count[term]--;
-		statistics[term].user_in++;
-	
-		/* Keep writing as long as there is something to write */
-		if (writeT_buf_count[term] > 0) {
-			i = writeT_buf_length[term] - writeT_buf_count[term];
-			
-			if (writeT_buf[term][i] == '\n' && writeT_first_newline[term]) {
-				WriteDataRegister(term, '\r');
-				writeT_buf_count[term]++;
-				statistics[term].user_in--;
-				writeT_first_newline[term] = false;
-			} else if (writeT_buf[term][i] == '\n') {
-				WriteDataRegister(term, writeT_buf[term][i]);
-				screen_len[term] = 0;
-				writeT_first_newline[term] = true;
-			} else {
-				WriteDataRegister(term, writeT_buf[term][i]);
-				screen_len[term]++;
-				writeT_first_newline[term] = true;
-			}
-		}
-		/* Else the output is done */
-		else {
-			CondSignal(writing[term]);
-		}
-	}
-
-	else {
-		/* Echo job is done */
-		CondSignal(busy_echo[term]);
-		initiate_echo[term] = true;
-	}
-	
+	return 0;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+int TerminalDriverStatistics(struct termstat *stats) {
+	Declare_Monitor_Entry_Procedure();
+	int i;
+	for (i = 0; i < NUM_TERMINALS; i++) {
+		stats[i].tty_in = stat[i].tty_in;
+		stats[i].tty_out = stat[i].tty_out;
+		stats[i].user_in = stat[i].user_in;
+		stats[i].user_out = stat[i].user_out;
+	}
+	return 0;
+}
 
 

@@ -57,28 +57,28 @@ include CMakeFiles/521lab1.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/521lab1.dir/flags.make
 
-CMakeFiles/521lab1.dir/montty.c.o: CMakeFiles/521lab1.dir/flags.make
-CMakeFiles/521lab1.dir/montty.c.o: ../montty.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/521lab1.dir/montty.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/521lab1.dir/montty.c.o   -c /Users/liufang/Documents/Courses/comp521/521lab1/montty.c
+CMakeFiles/521lab1.dir/montty1.c.o: CMakeFiles/521lab1.dir/flags.make
+CMakeFiles/521lab1.dir/montty1.c.o: ../montty1.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/521lab1.dir/montty1.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/521lab1.dir/montty1.c.o   -c /Users/liufang/Documents/Courses/comp521/521lab1/montty1.c
 
-CMakeFiles/521lab1.dir/montty.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/521lab1.dir/montty.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/liufang/Documents/Courses/comp521/521lab1/montty.c > CMakeFiles/521lab1.dir/montty.c.i
+CMakeFiles/521lab1.dir/montty1.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/521lab1.dir/montty1.c.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/liufang/Documents/Courses/comp521/521lab1/montty1.c > CMakeFiles/521lab1.dir/montty1.c.i
 
-CMakeFiles/521lab1.dir/montty.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/521lab1.dir/montty.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/liufang/Documents/Courses/comp521/521lab1/montty.c -o CMakeFiles/521lab1.dir/montty.c.s
+CMakeFiles/521lab1.dir/montty1.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/521lab1.dir/montty1.c.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/liufang/Documents/Courses/comp521/521lab1/montty1.c -o CMakeFiles/521lab1.dir/montty1.c.s
 
-CMakeFiles/521lab1.dir/montty.c.o.requires:
+CMakeFiles/521lab1.dir/montty1.c.o.requires:
 
-.PHONY : CMakeFiles/521lab1.dir/montty.c.o.requires
+.PHONY : CMakeFiles/521lab1.dir/montty1.c.o.requires
 
-CMakeFiles/521lab1.dir/montty.c.o.provides: CMakeFiles/521lab1.dir/montty.c.o.requires
-	$(MAKE) -f CMakeFiles/521lab1.dir/build.make CMakeFiles/521lab1.dir/montty.c.o.provides.build
-.PHONY : CMakeFiles/521lab1.dir/montty.c.o.provides
+CMakeFiles/521lab1.dir/montty1.c.o.provides: CMakeFiles/521lab1.dir/montty1.c.o.requires
+	$(MAKE) -f CMakeFiles/521lab1.dir/build.make CMakeFiles/521lab1.dir/montty1.c.o.provides.build
+.PHONY : CMakeFiles/521lab1.dir/montty1.c.o.provides
 
-CMakeFiles/521lab1.dir/montty.c.o.provides.build: CMakeFiles/521lab1.dir/montty.c.o
+CMakeFiles/521lab1.dir/montty1.c.o.provides.build: CMakeFiles/521lab1.dir/montty1.c.o
 
 
 CMakeFiles/521lab1.dir/test1.c.o: CMakeFiles/521lab1.dir/flags.make
@@ -177,25 +177,51 @@ CMakeFiles/521lab1.dir/test4.c.o.provides: CMakeFiles/521lab1.dir/test4.c.o.requ
 CMakeFiles/521lab1.dir/test4.c.o.provides.build: CMakeFiles/521lab1.dir/test4.c.o
 
 
+CMakeFiles/521lab1.dir/montty.c.c.o: CMakeFiles/521lab1.dir/flags.make
+CMakeFiles/521lab1.dir/montty.c.c.o: ../montty.c.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/521lab1.dir/montty.c.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/521lab1.dir/montty.c.c.o   -c /Users/liufang/Documents/Courses/comp521/521lab1/montty.c.c
+
+CMakeFiles/521lab1.dir/montty.c.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/521lab1.dir/montty.c.c.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/liufang/Documents/Courses/comp521/521lab1/montty.c.c > CMakeFiles/521lab1.dir/montty.c.c.i
+
+CMakeFiles/521lab1.dir/montty.c.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/521lab1.dir/montty.c.c.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/liufang/Documents/Courses/comp521/521lab1/montty.c.c -o CMakeFiles/521lab1.dir/montty.c.c.s
+
+CMakeFiles/521lab1.dir/montty.c.c.o.requires:
+
+.PHONY : CMakeFiles/521lab1.dir/montty.c.c.o.requires
+
+CMakeFiles/521lab1.dir/montty.c.c.o.provides: CMakeFiles/521lab1.dir/montty.c.c.o.requires
+	$(MAKE) -f CMakeFiles/521lab1.dir/build.make CMakeFiles/521lab1.dir/montty.c.c.o.provides.build
+.PHONY : CMakeFiles/521lab1.dir/montty.c.c.o.provides
+
+CMakeFiles/521lab1.dir/montty.c.c.o.provides.build: CMakeFiles/521lab1.dir/montty.c.c.o
+
+
 # Object files for target 521lab1
 521lab1_OBJECTS = \
-"CMakeFiles/521lab1.dir/montty.c.o" \
+"CMakeFiles/521lab1.dir/montty1.c.o" \
 "CMakeFiles/521lab1.dir/test1.c.o" \
 "CMakeFiles/521lab1.dir/test2.c.o" \
 "CMakeFiles/521lab1.dir/test3.c.o" \
-"CMakeFiles/521lab1.dir/test4.c.o"
+"CMakeFiles/521lab1.dir/test4.c.o" \
+"CMakeFiles/521lab1.dir/montty.c.c.o"
 
 # External object files for target 521lab1
 521lab1_EXTERNAL_OBJECTS =
 
-521lab1: CMakeFiles/521lab1.dir/montty.c.o
+521lab1: CMakeFiles/521lab1.dir/montty1.c.o
 521lab1: CMakeFiles/521lab1.dir/test1.c.o
 521lab1: CMakeFiles/521lab1.dir/test2.c.o
 521lab1: CMakeFiles/521lab1.dir/test3.c.o
 521lab1: CMakeFiles/521lab1.dir/test4.c.o
+521lab1: CMakeFiles/521lab1.dir/montty.c.c.o
 521lab1: CMakeFiles/521lab1.dir/build.make
 521lab1: CMakeFiles/521lab1.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable 521lab1"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking C executable 521lab1"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/521lab1.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -203,11 +229,12 @@ CMakeFiles/521lab1.dir/build: 521lab1
 
 .PHONY : CMakeFiles/521lab1.dir/build
 
-CMakeFiles/521lab1.dir/requires: CMakeFiles/521lab1.dir/montty.c.o.requires
+CMakeFiles/521lab1.dir/requires: CMakeFiles/521lab1.dir/montty1.c.o.requires
 CMakeFiles/521lab1.dir/requires: CMakeFiles/521lab1.dir/test1.c.o.requires
 CMakeFiles/521lab1.dir/requires: CMakeFiles/521lab1.dir/test2.c.o.requires
 CMakeFiles/521lab1.dir/requires: CMakeFiles/521lab1.dir/test3.c.o.requires
 CMakeFiles/521lab1.dir/requires: CMakeFiles/521lab1.dir/test4.c.o.requires
+CMakeFiles/521lab1.dir/requires: CMakeFiles/521lab1.dir/montty.c.c.o.requires
 
 .PHONY : CMakeFiles/521lab1.dir/requires
 
