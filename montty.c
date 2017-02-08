@@ -52,7 +52,7 @@ bool first_backspace[NUM_TERMINALS];
 struct termstat statistics[NUM_TERMINALS];
 
 //track open terminals
-int open_terminal[NUM_TERMINALS];
+int open_terminals[NUM_TERMINALS];
 
 
 extern
@@ -60,7 +60,7 @@ int WriteTerminal(int term, char *buf, int buflen)
 {
     Declare_Monitor_Entry_Procedure();
     //precheck of exception
-    if(buflen<1 || open_terminal[term] <0 || term<0 || term > NUM_TERMINALS-1) return -1;
+    if(buflen<1 || open_terminals[term] <0 || term<0 || term > NUM_TERMINALS-1) return -1;
 
     //check if anyone else is writing terminal:term
     if(num_writer[term] > 0 || num_waiting[term] >0 ){
@@ -104,7 +104,7 @@ int ReadTerminal(int term, char *buf,int buflen)
     char c;
     int i;
 
-    if((buflen<1) || buflen> INPUT_BUF_SIZE || (open_terminal[term] < 0) || term <0 || term > NUM_TERMINALS-1) return -1;
+    if((buflen<1) || buflen> INPUT_BUF_SIZE || (open_terminals[term] < 0) || term <0 || term > NUM_TERMINALS-1) return -1;
 
     if(num_reader[term]>0){
         CondWait(reader[term]);
@@ -138,12 +138,12 @@ int InitTerminal(int term){
     Declare_Monitor_Entry_Procedure();
 
     //precheck
-    if(open_terminal[term] == 0 || term < 0 || term > NUM_TERMINALS-1) return -1;
+    if(open_terminals[term] == 0 || term < 0 || term > NUM_TERMINALS-1) return -1;
 
 
-    open_terminal[term] = InitHardware(term);
+    open_terminals[term] = InitHardware(term);
 
-    if(open_terminal[term] == 0){
+    if(open_terminals[term] == 0){
 
         //conditional variable
         writer[term] = CondCreate();
@@ -181,7 +181,7 @@ int InitTerminal(int term){
         statistics[term].user_out =0;
     }
 
-    return open_terminal[term];
+    return open_terminals[term];
 }
 
 extern
@@ -189,7 +189,7 @@ int InitTerminalDriver(){
     Declare_Monitor_Entry_Procedure();
     int i;
     for(i=0;i<NUM_TERMINALS;i++){
-        open_terminal[i] = -1;
+        open_terminals[i] = -1;
         statistics[i].tty_in = -1;
         statistics[i].tty_out =-1;
         statistics[i].user_in =-1;
