@@ -41,7 +41,7 @@ int num_waiting[NUM_TERMINALS];
 //TerminalDriverStatistics for all terminals
 struct termstat statistics[NUM_TERMINALS];
 
-//check if echo is initiated
+//check if echo should be initiated, if true, stop Writeterminal
 bool initiate_echo[NUM_TERMINALS];
 
 //Store the WriteTerminal Buffer
@@ -181,7 +181,7 @@ int InitTerminal(int term){
         num_waiting[term]  = 0 ;
         writeT_buf_count[term] =0;
         writeT_buf_length[term] = 0;
-        writeT_first_newline = true;
+        writeT_first_newline[term] = true;
 
         //ReadTerminal
         num_reader[term] = 0;
@@ -321,7 +321,7 @@ void TransmitInterupt(int term) {
         screen_len[term] = 0;
     } else if('\b' == echo_buffer[term][prev]){
         if(first_backspace[term]){
-            WriteDataRegister(term, '');
+            WriteDataRegister(term, ' ');
             first_backspace[term]= false;
             initiate_echo[term] = false;
         }else{
@@ -349,7 +349,7 @@ void TransmitInterupt(int term) {
                 WriteDataRegister(term, '\r');
                 writeT_buf_count[term]++;
                 statistics[term].user_in--;
-                writeT_first_newline = false;
+                writeT_first_newline[term] = false;
             }else if(writeT_buf[term][i]=='\n'){
                 WriteDataRegister(term, writeT_buf[term][i]);
                 screen_len[term] =0;
