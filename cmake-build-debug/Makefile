@@ -123,32 +123,32 @@ depend:
 	$(MAKE) -f CMakeFiles/521lab1.dir/build.make CMakeFiles/521lab1.dir/build
 .PHONY : 521lab1/fast
 
-montty.c.o: montty.c.c.o
+montty.o: montty.c.o
 
-.PHONY : montty.c.o
+.PHONY : montty.o
 
 # target to build an object file
-montty.c.c.o:
-	$(MAKE) -f CMakeFiles/521lab1.dir/build.make CMakeFiles/521lab1.dir/montty.c.c.o
-.PHONY : montty.c.c.o
+montty.c.o:
+	$(MAKE) -f CMakeFiles/521lab1.dir/build.make CMakeFiles/521lab1.dir/montty.c.o
+.PHONY : montty.c.o
 
-montty.c.i: montty.c.c.i
+montty.i: montty.c.i
 
-.PHONY : montty.c.i
+.PHONY : montty.i
 
 # target to preprocess a source file
-montty.c.c.i:
-	$(MAKE) -f CMakeFiles/521lab1.dir/build.make CMakeFiles/521lab1.dir/montty.c.c.i
-.PHONY : montty.c.c.i
+montty.c.i:
+	$(MAKE) -f CMakeFiles/521lab1.dir/build.make CMakeFiles/521lab1.dir/montty.c.i
+.PHONY : montty.c.i
 
-montty.c.s: montty.c.c.s
+montty.s: montty.c.s
 
-.PHONY : montty.c.s
+.PHONY : montty.s
 
 # target to generate assembly for a file
-montty.c.c.s:
-	$(MAKE) -f CMakeFiles/521lab1.dir/build.make CMakeFiles/521lab1.dir/montty.c.c.s
-.PHONY : montty.c.c.s
+montty.c.s:
+	$(MAKE) -f CMakeFiles/521lab1.dir/build.make CMakeFiles/521lab1.dir/montty.c.s
+.PHONY : montty.c.s
 
 montty1.o: montty1.c.o
 
@@ -294,9 +294,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... 521lab1"
-	@echo "... montty.c.o"
-	@echo "... montty.c.i"
-	@echo "... montty.c.s"
+	@echo "... montty.o"
+	@echo "... montty.i"
+	@echo "... montty.s"
 	@echo "... montty1.o"
 	@echo "... montty1.i"
 	@echo "... montty1.s"
