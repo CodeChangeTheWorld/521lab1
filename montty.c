@@ -110,7 +110,7 @@ int WriteTerminal(int term, char *buf, int buflen)
         statistics[term].user_in--;
         writeT_first_newline[term]=false;
     }else{
-        WriteDataRegister(term, writeT_buf[0]); //put a char into write data register pf terminal term
+        WriteDataRegister(term, writeT_buf[term][0]); //put a char into write data register pf terminal term
         writeT_first_newline[term]= true;
     }
 
@@ -316,7 +316,7 @@ void TransmitInterupt(int term) {
 
     if('\r' == echo_buffer[term][prev]){
         WriteDataRegister(term, '\n');
-        echo_buffer[term][prev];
+        echo_buffer[term][prev]='\n';
         initiate_echo[term] = false;
         screen_len[term] = 0;
     } else if('\b' == echo_buffer[term][prev]){

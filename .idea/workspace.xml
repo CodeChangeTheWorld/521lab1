@@ -51,8 +51,8 @@
       <file leaf-file-name="montty.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/montty.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="355" column="50" lean-forward="true" selection-start-line="355" selection-start-column="50" selection-end-line="355" selection-end-column="50" />
+            <state relative-caret-position="555">
+              <caret line="317" column="38" lean-forward="true" selection-start-line="317" selection-start-column="38" selection-end-line="317" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -326,12 +326,12 @@
       <option name="presentableId" value="Default" />
       <updated>1486446584296</updated>
       <workItem from="1486446587803" duration="22299000" />
-      <workItem from="1486535688389" duration="2273000" />
+      <workItem from="1486535688389" duration="2543000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24572000" />
+    <option name="totallyTimeSpent" value="24842000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
@@ -475,8 +475,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/montty.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="355" column="50" lean-forward="true" selection-start-line="355" selection-start-column="50" selection-end-line="355" selection-end-column="50" />
+        <state relative-caret-position="555">
+          <caret line="317" column="38" lean-forward="true" selection-start-line="317" selection-start-column="38" selection-end-line="317" selection-end-column="38" />
           <folding />
         </state>
       </provider>
