@@ -25,64 +25,40 @@ static cond_id_t busy_echo[NUM_TERMINALS];
 char echo_buffer[NUM_TERMINALS][ECHO_BUF_SIZE];
 char input_buffer[NUM_TERMINALS][INPUT_BUF_SIZE];
 
-//Record open terminals
-int open_terminal[NUM_TERMINALS];
+//WriteTerminal
+int num_writer[NUM_TERMINALS] ;
+int num_waiting[NUM_TERMINALS]  ;
+char *writeT_buf[NUM_TERMINALS];
+int writeT_buf_count[NUM_TERMINALS] ;
+int writeT_buf_length[NUM_TERMINALS] ;
+bool writeT_first_newline[NUM_TERMINALS] ;// check if current char is the first in a line
 
-//count chars in echo buffer
-int echo_count[NUM_TERMINALS];
-
-//track the number of threads that are writing to terminal
-int num_writer[NUM_TERMINALS];
-
-//track number of waiting to write terminals
-int num_waiting[NUM_TERMINALS];
-
-
-//TerminalDriverStatistics for all terminals
-struct termstat statistics[NUM_TERMINALS];
-
-//check if echo should be initiated, if true, stop Writeterminal
-bool initiate_echo[NUM_TERMINALS];
-
-//Store the WriteTerminal Buffer
-char* writeT_buf[NUM_TERMINALS];
-
-//Count the WriteTerminal buffer
-int writeT_buf_count[NUM_TERMINALS];
-
-// length of WriteTerminal buffer
-int writeT_buf_length[NUM_TERMINALS];
-
-// Keep track of whether a newline was written or not
-bool writeT_first_newline[NUM_TERMINALS];
-
-//number of input readable
+//ReadTerminal
+int num_reader[NUM_TERMINALS] ;
 int num_readable_input[NUM_TERMINALS];
-//number of readers
-int num_reader[NUM_TERMINALS];
-
-//input read & write index
 int input_buf_write_index[NUM_TERMINALS];
-int input_buf_read_index[NUM_TERMINALS];
-
-//input buffer count
-int input_buf_count[NUM_TERMINALS];
-
+int input_buf_read_index[NUM_TERMINALS] ;
 
 //Echo
-int screen_len[NUM_TERMINALS]; // track char nums on screen
-
+int echo_count[NUM_TERMINALS] ;
+int input_buf_count[NUM_TERMINALS];
+int screen_len[NUM_TERMINALS] ; // track char nums on screen
 int echo_buf_write_index[NUM_TERMINALS] ; // track current index for echo_buffer write
-
 int echo_buf_read_index[NUM_TERMINALS] ; // track current index for echo_buffer read
 bool initiate_echo[NUM_TERMINALS] ;
 bool first_backspace[NUM_TERMINALS];
+
+//Statistics
+struct termstat statistics[NUM_TERMINALS];
+
+//track open terminals
+int open_terminal[NUM_TERMINALS];
+
 
 extern
 int WriteTerminal(int term, char *buf, int buflen)
 {
     Declare_Monitor_Entry_Procedure();
-
     //precheck of exception
     if(buflen<1 || open_terminal[term] <0 || term<0 || term > NUM_TERMINALS-1) return -1;
 
@@ -101,7 +77,7 @@ int WriteTerminal(int term, char *buf, int buflen)
         CondWait(busy_echo[term]);
 
     writeT_buf[term] = buf;
-    writeT_buf_count[term]++;
+    writeT_buf_count[term] = buflen;
     writeT_buf_length[term] = buflen;
 
     if(writeT_buf[term][0]=='\n'){
@@ -121,7 +97,7 @@ int WriteTerminal(int term, char *buf, int buflen)
 }
 
 extern
-int ReadTerminal(int term, char* buf,int buflen)
+int ReadTerminal(int term, char *buf,int buflen)
 {
     // copy characters typed from terminal to buffer *buf
     Declare_Monitor_Entry_Procedure();

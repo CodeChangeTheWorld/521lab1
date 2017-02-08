@@ -12,10 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="474c5f6e-3c4c-40b5-b5d0-b950e7239afa" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Makefile.template" afterPath="$PROJECT_DIR$/Makefile" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/montty.c" afterPath="$PROJECT_DIR$/montty12.c" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/montty1.c" afterPath="$PROJECT_DIR$/montty.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CMakeLists.txt" afterPath="$PROJECT_DIR$/CMakeLists.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/montty12.c" afterPath="$PROJECT_DIR$/montty12.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -44,8 +42,8 @@
       <file leaf-file-name="montty.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/montty.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="358" column="22" lean-forward="false" selection-start-line="358" selection-start-column="5" selection-end-line="358" selection-end-column="22" />
+            <state relative-caret-position="180">
+              <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -61,21 +59,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Makefile" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Makefile" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Makefile">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="27">
+            <state relative-caret-position="177">
               <caret line="26" column="62" lean-forward="true" selection-start-line="26" selection-start-column="62" selection-end-line="26" selection-end-column="62" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="montty12.c" pinned="false" current-in-tab="false">
+      <file leaf-file-name="test4.c" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test4.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="57">
+              <caret line="15" column="27" lean-forward="false" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="montty12.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/montty12.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="307" column="6" lean-forward="false" selection-start-line="307" selection-start-column="6" selection-end-line="307" selection-end-column="6" />
+            <state relative-caret-position="195">
+              <caret line="95" column="18" lean-forward="true" selection-start-line="95" selection-start-column="18" selection-end-line="95" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -89,8 +97,8 @@
       <find>terminaldriver</find>
       <find>Initiate_echo</find>
       <find>echo_buffer[term][prev]</find>
-      <find>WriteDataRegister</find>
       <find>TransmitInterrupt</find>
+      <find>WriteDataRegister</find>
     </findStrings>
     <replaceStrings>
       <replace>NUM_TERMINALS</replace>
@@ -107,9 +115,10 @@
         <option value="$PROJECT_DIR$/test4.c" />
         <option value="$PROJECT_DIR$/test2.c" />
         <option value="$PROJECT_DIR$/montty1.c" />
-        <option value="$PROJECT_DIR$/montty.c" />
         <option value="$PROJECT_DIR$/Makefile.template" />
         <option value="$PROJECT_DIR$/Makefile" />
+        <option value="$PROJECT_DIR$/montty.c" />
+        <option value="$PROJECT_DIR$/montty12.c" />
       </list>
     </option>
   </component>
@@ -353,12 +362,12 @@
       <option name="presentableId" value="Default" />
       <updated>1486446584296</updated>
       <workItem from="1486446587803" duration="22299000" />
-      <workItem from="1486535688389" duration="3059000" />
+      <workItem from="1486535688389" duration="5160000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25358000" />
+    <option name="totallyTimeSpent" value="27459000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
@@ -476,30 +485,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test4.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="27" lean-forward="false" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/montty.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="358" column="22" lean-forward="false" selection-start-line="358" selection-start-column="5" selection-end-line="358" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/montty12.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="307" column="6" lean-forward="false" selection-start-line="307" selection-start-column="6" selection-end-line="307" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test2.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
@@ -510,8 +495,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Makefile">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
+        <state relative-caret-position="177">
           <caret line="26" column="62" lean-forward="true" selection-start-line="26" selection-start-column="62" selection-end-line="26" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test4.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="15" column="27" lean-forward="false" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/montty.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/montty12.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="95" column="18" lean-forward="true" selection-start-line="95" selection-start-column="18" selection-end-line="95" selection-end-column="18" />
           <folding />
         </state>
       </provider>
