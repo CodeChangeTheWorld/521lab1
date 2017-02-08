@@ -10,7 +10,7 @@
 #	your Makefile and will grade the resulting device driver
 #	named "montty.o" when lilnked with our own user test programs.
 #
-MONTTY = montty1.o
+MONTTY = montty.o
 
 #
 #	This Makefile and the project are designed to work with gcc.
@@ -42,7 +42,7 @@ LANG = gcc
 #	terminal device driver named \verb|montty.o|.  Your
 #	compiled driver *must* be named \verb|montty.o|.
 #
-TEST = test1 test2 test3
+TEST = test1 test2 test3 test4
 ALL = $(MONTTY) $(TEST)
 
 #
