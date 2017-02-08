@@ -10,7 +10,7 @@
 #	your Makefile and will grade the resulting device driver
 #	named "montty.o" when lilnked with our own user test programs.
 #
-MONTTY = montty.o
+MONTTY = montty1.o
 
 #
 #	This Makefile and the project are designed to work with gcc.

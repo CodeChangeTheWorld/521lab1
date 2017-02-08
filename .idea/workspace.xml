@@ -12,7 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="474c5f6e-3c4c-40b5-b5d0-b950e7239afa" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/montty.c" afterPath="$PROJECT_DIR$/montty.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Makefile.template" afterPath="$PROJECT_DIR$/Makefile.template" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -48,7 +48,27 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="montty.c" pinned="false" current-in-tab="true">
+      <file leaf-file-name="test2.c" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test2.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="465">
+              <caret line="31" column="36" lean-forward="false" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Makefile.template" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Makefile.template">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="297">
+              <caret line="44" column="24" lean-forward="true" selection-start-line="44" selection-start-column="24" selection-end-line="44" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="montty.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/montty.c">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="405">
@@ -67,6 +87,7 @@
       <find>Initiate_echo</find>
       <find>echo_buffer[term][prev]</find>
       <find>WriteDataRegister</find>
+      <find>TransmitInterrupt</find>
     </findStrings>
     <replaceStrings>
       <replace>NUM_TERMINALS</replace>
@@ -84,6 +105,7 @@
         <option value="$PROJECT_DIR$/test2.c" />
         <option value="$PROJECT_DIR$/montty1.c" />
         <option value="$PROJECT_DIR$/montty.c" />
+        <option value="$PROJECT_DIR$/Makefile.template" />
       </list>
     </option>
   </component>
@@ -327,12 +349,12 @@
       <option name="presentableId" value="Default" />
       <updated>1486446584296</updated>
       <workItem from="1486446587803" duration="22299000" />
-      <workItem from="1486535688389" duration="2607000" />
+      <workItem from="1486535688389" duration="2939000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24906000" />
+    <option name="totallyTimeSpent" value="25238000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
@@ -442,14 +464,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test2.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="16" lean-forward="false" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test3.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -478,6 +492,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
           <caret line="307" column="6" lean-forward="true" selection-start-line="307" selection-start-column="6" selection-end-line="307" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test2.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="31" column="36" lean-forward="false" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Makefile.template">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="44" column="24" lean-forward="true" selection-start-line="44" selection-start-column="24" selection-end-line="44" selection-end-column="24" />
           <folding />
         </state>
       </provider>
