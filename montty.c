@@ -130,7 +130,7 @@ int ReadTerminal(int term, char* buf,int buflen)
 
     if((buflen<1) || buflen> INPUT_BUF_SIZE || (open_terminal[term] < 0) || term <0 || term > NUM_TERMINALS-1) return -1;
 
-    if(num_readers[term]>0){
+    if(num_reader[term]>0){
         CondWait(reader[term]);
     }
     num_readers[term]++;
