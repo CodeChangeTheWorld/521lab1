@@ -23,10 +23,10 @@ int main(int argc, char **argv)
     if (argc > 2) HardwareInputSpeed(2, atoi(argv[2]));
     sleep(5);
 
-        while(1) {
+    while(1) {
 	  ThreadCreate(writer, NULL);
 	  ThreadCreate(reader, NULL);
-          ThreadCreate(writer2, NULL);
+      ThreadCreate(writer2, NULL);
 	  ThreadCreate(reader2, NULL);
         sleep(5);
 	}
@@ -40,7 +40,7 @@ writer(void *arg)
 {
     int status;
 
-    //    printf("Doing WriteTerminal... '\n");
+    //printf("Doing WriteTerminal... '\n");
     fflush(stdout);
     status = WriteTerminal(1, string, length);
     char* str = malloc(3);
@@ -70,7 +70,7 @@ reader(void *arg)
     //    printf("Doing ReadTerminal... '");
     fflush(stdout);
     char* str = malloc(100);
-    status = ReadTerminal(1, str,10);
+    status = ReadTerminal(1, str,5);
     printf("read1 %s", str);
     free(str);
     fflush(stdout);
