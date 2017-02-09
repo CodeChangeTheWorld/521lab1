@@ -1,0 +1,7 @@
+Use 5 condition variables to satisfy the 3 requirements of critical section problems: Mutual Exclusion, Progress and Bounded Waiting.
+3 condition variables are used for WriteTerminal(writer, writing and echobusy).
+They are used to ensure that only one is writing at a time and does not start writing while terminal is still echoing.  WriteTerminal is blocked until all writing is finished.
+2 condition variables are used in ReadTerminal (readable & reader) to insure that only one is reading at a time and only read until the buffer is ready to be read.
+ReceiveInterrupt will initiate WriteDataRegister, if and only if nothing is currently writing to the screen.
+TransmitInterrupt will keep writing to the screen as long as there is something to be written.
+Once the loop is started, only TransmitInterrupt will call WriteDataRegister.

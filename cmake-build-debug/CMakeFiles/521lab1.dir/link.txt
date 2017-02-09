@@ -1,1 +1,0 @@
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/521lab1.dir/montty1.c.o CMakeFiles/521lab1.dir/test1.c.o CMakeFiles/521lab1.dir/test2.c.o CMakeFiles/521lab1.dir/test3.c.o CMakeFiles/521lab1.dir/test4.c.o CMakeFiles/521lab1.dir/montty.c.o  -o 521lab1 

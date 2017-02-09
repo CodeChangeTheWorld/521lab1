@@ -1,3 +1,0 @@
-/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/liufang/Documents/Courses/comp521/521lab1/cmake-build-debug/CMakeFiles/521lab1.dir

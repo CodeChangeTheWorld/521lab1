@@ -27,7 +27,7 @@ char input_buffer[NUM_TERMINALS][INPUT_BUF_SIZE];
 
 //WriteTerminal
 int num_writer[NUM_TERMINALS] ;
-int num_waiting[NUM_TERMINALS]  ;
+int num_waiting[NUM_TERMINALS];
 char *writeT_buf[NUM_TERMINALS];
 int writeT_buf_count[NUM_TERMINALS] ;
 int writeT_buf_length[NUM_TERMINALS] ;
@@ -64,6 +64,7 @@ int WriteTerminal(int term, char *buf, int buflen)
 
     //check if anyone else is writing terminal:term
     if(num_writer[term] > 0 || num_waiting[term] >0 ){
+        //num_waiting avoid starvation. As long as there are other writer waiting to write, I will wait after them.
         num_waiting[term]++;
         CondWait(writer[term]);
     }else{
